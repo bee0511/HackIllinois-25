@@ -66,7 +66,7 @@ export default function HackIllinois25Feature() {
     setMinting(true);
 
     try {
-      const programId = new web3.PublicKey("Csf3YvCd81JfpXs42Zko153e99tCp8B2KYmRfYYbaMiP");
+      // const programId = new web3.PublicKey("Csf3YvCd81JfpXs42Zko153e99tCp8B2KYmRfYYbaMiP");
 
       // ✅ FIX: Wrap the wallet in an object to match Anchor's expected structure
 
