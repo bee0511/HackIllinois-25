@@ -14,11 +14,31 @@ export default function Home() {
       messages: [
         {
           role: "system",
-          content: "You are a helpful AI assistant. Follow instructions carefully. Respond using markdown."
+          content: `
+    You are a game master for a role-playing game. Your role is to set the scene and determine the events based on player input. After each dialogue, you should update the player's character attributes (HP, DEF, ATK) and output your response in JSON format.
+     
+    The JSON response should include the following keys:
+    - "scene": A description of the current scenario.
+    - "event": A description of the event that just happened.
+    - "stats": An object containing the character's updated stats, e.g. { "HP": number, "DEF": number, "ATK": number }.
+    - "narrative": (Optional) Any additional narrative or instructions.
+    
+    Make sure the JSON is valid and contains no additional text.
+          `.trim()
         },
         {
           role: "user",
-          content: prompt
+          content: `
+    You are a game master for a role-playing game. Your role is to set the scene and determine the events based on player input. After each dialogue, you should update the player's character attributes (HP, DEF, ATK) and output your response in JSON format.
+     
+    The JSON response should include the following keys:
+    - "scene": A description of the current scenario.
+    - "event": A description of the event that just happened.
+    - "stats": An object containing the character's updated stats, e.g. { "HP": number, "DEF": number, "ATK": number }.
+    - "narrative": (Optional) Any additional narrative or instructions.
+    
+    Make sure the JSON is valid and contains no additional text.
+          `.trim() + ", and the following is the user input:" + prompt
         }
       ],
       temperature: 0.1,
