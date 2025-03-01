@@ -2,69 +2,61 @@
 
 use anchor_lang::prelude::*;
 
-declare_id!("coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF");
+declare_id!("Csf3YvCd81JfpXs42Zko153e99tCp8B2KYmRfYYbaMiP"); // Your program ID
 
 #[program]
 pub mod HackIllinois25 {
     use super::*;
 
-  pub fn close(_ctx: Context<CloseHackIllinois25>) -> Result<()> {
-    Ok(())
-  }
+    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        msg!("Initializing NFT Pet Account");
+        Ok(())
+    }
 
-  pub fn decrement(ctx: Context<Update>) -> Result<()> {
-    ctx.accounts.HackIllinois25.count = ctx.accounts.HackIllinois25.count.checked_sub(1).unwrap();
-    Ok(())
-  }
+    pub fn mint_pet(ctx: Context<MintPet>, name: String, species: String) -> Result<()> {
+        let pet = &mut ctx.accounts.pet;
+        pet.owner = *ctx.accounts.owner.key;
+        pet.name = name.clone();
+        pet.species = species.clone();
+        pet.experience = 0;
+        pet.hunger = 100;
+        msg!("Minted pet {} of species {}", name, species);
+        Ok(())
+    }
 
-  pub fn increment(ctx: Context<Update>) -> Result<()> {
-    ctx.accounts.HackIllinois25.count = ctx.accounts.HackIllinois25.count.checked_add(1).unwrap();
-    Ok(())
-  }
-
-  pub fn initialize(_ctx: Context<InitializeHackIllinois25>) -> Result<()> {
-    Ok(())
-  }
-
-  pub fn set(ctx: Context<Update>, value: u8) -> Result<()> {
-    ctx.accounts.HackIllinois25.count = value.clone();
-    Ok(())
-  }
+    pub fn update_pet(ctx: Context<UpdatePet>, experience: u64, hunger: u64) -> Result<()> {
+        let pet = &mut ctx.accounts.pet;
+        pet.experience = experience;
+        pet.hunger = hunger;
+        msg!("Updated pet: Experience = {}, Hunger = {}", experience, hunger);
+        Ok(())
+    }
 }
 
 #[derive(Accounts)]
-pub struct InitializeHackIllinois25<'info> {
-  #[account(mut)]
-  pub payer: Signer<'info>,
+pub struct Initialize {}
 
-  #[account(
-  init,
-  space = 8 + HackIllinois25::INIT_SPACE,
-  payer = payer
-  )]
-  pub HackIllinois25: Account<'info, HackIllinois25>,
-  pub system_program: Program<'info, System>,
-}
 #[derive(Accounts)]
-pub struct CloseHackIllinois25<'info> {
-  #[account(mut)]
-  pub payer: Signer<'info>,
-
-  #[account(
-  mut,
-  close = payer, // close account and return lamports to payer
-  )]
-  pub HackIllinois25: Account<'info, HackIllinois25>,
+pub struct MintPet<'info> {
+    #[account(init, payer = owner, space = 128)]
+    pub pet: Account<'info, Pet>,
+    #[account(mut)]
+    pub owner: Signer<'info>,
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
-pub struct Update<'info> {
-  #[account(mut)]
-  pub HackIllinois25: Account<'info, HackIllinois25>,
+pub struct UpdatePet<'info> {
+    #[account(mut, has_one = owner)]
+    pub pet: Account<'info, Pet>,
+    pub owner: Signer<'info>,
 }
 
 #[account]
-#[derive(InitSpace)]
-pub struct HackIllinois25 {
-  count: u8,
+pub struct Pet {
+    pub owner: Pubkey,
+    pub name: String,
+    pub species: String,
+    pub experience: u64,
+    pub hunger: u64,
 }

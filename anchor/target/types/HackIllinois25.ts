@@ -5,79 +5,14 @@
  * IDL can be found at `target/idl/HackIllinois25.json`.
  */
 export type HackIllinois25 = {
-  "address": "coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF",
+  "address": "Csf3YvCd81JfpXs42Zko153e99tCp8B2KYmRfYYbaMiP",
   "metadata": {
-    "name": "HackIllinois25",
+    "name": "hackIllinois25",
     "version": "0.1.0",
     "spec": "0.1.0",
     "description": "Created with Anchor"
   },
   "instructions": [
-    {
-      "name": "close",
-      "discriminator": [
-        98,
-        165,
-        201,
-        177,
-        108,
-        65,
-        206,
-        96
-      ],
-      "accounts": [
-        {
-          "name": "payer",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "HackIllinois25",
-          "writable": true
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "decrement",
-      "discriminator": [
-        106,
-        227,
-        168,
-        59,
-        248,
-        27,
-        150,
-        101
-      ],
-      "accounts": [
-        {
-          "name": "HackIllinois25",
-          "writable": true
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "increment",
-      "discriminator": [
-        11,
-        18,
-        104,
-        9,
-        104,
-        174,
-        59,
-        33
-      ],
-      "accounts": [
-        {
-          "name": "HackIllinois25",
-          "writable": true
-        }
-      ],
-      "args": []
-    },
     {
       "name": "initialize",
       "discriminator": [
@@ -90,14 +25,29 @@ export type HackIllinois25 = {
         155,
         237
       ],
+      "accounts": [],
+      "args": []
+    },
+    {
+      "name": "mintPet",
+      "discriminator": [
+        247,
+        107,
+        206,
+        124,
+        168,
+        131,
+        67,
+        109
+      ],
       "accounts": [
         {
-          "name": "payer",
+          "name": "pet",
           "writable": true,
           "signer": true
         },
         {
-          "name": "HackIllinois25",
+          "name": "owner",
           "writable": true,
           "signer": true
         },
@@ -106,58 +56,94 @@ export type HackIllinois25 = {
           "address": "11111111111111111111111111111111"
         }
       ],
-      "args": []
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "species",
+          "type": "string"
+        }
+      ]
     },
     {
-      "name": "set",
+      "name": "updatePet",
       "discriminator": [
-        198,
-        51,
-        53,
-        241,
         116,
-        29,
-        126,
-        194
+        234,
+        195,
+        185,
+        195,
+        165,
+        42,
+        25
       ],
       "accounts": [
         {
-          "name": "HackIllinois25",
+          "name": "pet",
           "writable": true
+        },
+        {
+          "name": "owner",
+          "signer": true,
+          "relations": [
+            "pet"
+          ]
         }
       ],
       "args": [
         {
-          "name": "value",
-          "type": "u8"
+          "name": "experience",
+          "type": "u64"
+        },
+        {
+          "name": "hunger",
+          "type": "u64"
         }
       ]
     }
   ],
   "accounts": [
     {
-      "name": "HackIllinois25",
+      "name": "pet",
       "discriminator": [
-        255,
-        176,
-        4,
-        245,
-        188,
-        253,
-        124,
-        25
+        180,
+        195,
+        178,
+        241,
+        61,
+        123,
+        238,
+        32
       ]
     }
   ],
   "types": [
     {
-      "name": "HackIllinois25",
+      "name": "pet",
       "type": {
         "kind": "struct",
         "fields": [
           {
-            "name": "count",
-            "type": "u8"
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "species",
+            "type": "string"
+          },
+          {
+            "name": "experience",
+            "type": "u64"
+          },
+          {
+            "name": "hunger",
+            "type": "u64"
           }
         ]
       }
