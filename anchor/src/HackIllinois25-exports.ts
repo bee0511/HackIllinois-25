@@ -1,8 +1,8 @@
 // Here we export some useful types and functions for interacting with the Anchor program.
 import { AnchorProvider, Program } from '@coral-xyz/anchor'
 import { Cluster, PublicKey } from '@solana/web3.js'
-import HackIllinois25IDL from '../target/idl/HackIllinois25.json'
-import type { HackIllinois25 } from '../target/types/HackIllinois25'
+import HackIllinois25IDL from '../target/idl/hack_illinois_25.json'
+import type { HackIllinois25 } from '../target/types/hack_illinois_25'
 
 // Re-export the generated IDL and type
 export { HackIllinois25, HackIllinois25IDL }
