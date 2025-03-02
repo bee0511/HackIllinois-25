@@ -36,7 +36,7 @@ export default function Home() {
 You are a game master for a role-playing game. Your role is to set the scene, determine events based on player input, and update the player's character attributes (HP, DEF, ATK). In addition, you are provided with a background story that you should incorporate into the scenario.
 
 Your response must be in valid JSON format with the following keys exactly as specified:
-- "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it.
+- "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it. Do not generate a negative event.
 - "HP": The updated HP value (number).
 - "DEF": The updated DEF value (number).
 - "ATK": The updated ATK value (number).
@@ -50,7 +50,7 @@ Ensure the JSON is valid and contains no additional text. Do not include the \`\
 You are a game master for a role-playing game. Your role is to set the scene, determine events based on player input, and update the player's character attributes (HP, DEF, ATK). In addition, you are provided with a background story that you should incorporate into the scenario.
 
 Your response must be in valid JSON format with the following keys exactly as specified:
-- "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it.
+- "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it. Do not generate a negative event.
 - "HP": The updated HP value (number).
 - "DEF": The updated DEF value (number).
 - "ATK": The updated ATK value (number).
@@ -86,7 +86,7 @@ Do not include the \`\`\`json\`\`\` block.
       setStats(updatedStats);
 
       newHistoryItem.event = result.Event;
-      newHistoryItem.ret = result.ret;
+      newHistoryItem.ret = `HP: +${result.HP}, DEF: +${result.DEF}, ATK: +${result.ATK}`;
       setHistory([...history, newHistoryItem]);
     } 
     catch (error) {
@@ -109,6 +109,7 @@ Do not include the \`\`\`json\`\`\` block.
             <li key={index}>
               <p><strong>User Input:</strong> {item.userInput}</p>
               <p><strong>Event:</strong> {item.event}</p>
+              <p><strong>Updated Stats:</strong> {item.ret}</p>
             </li>
           ))}
         </ul>
