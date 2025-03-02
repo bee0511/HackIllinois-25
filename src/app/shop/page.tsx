@@ -4,7 +4,7 @@ import { useState } from "react";
 import AdventureCard from "@/components/shop/AdventureCard";
 import ChatbotContainer from "@/components/shop/ChatbotContainer";
 import WalletHeader from "@/components/shop/WalletHeader";
-import { useMintGameNFT } from "@/components/solana/mint-nft";  // ✅ Import mint function
+import { mintGameNFT } from "@/components/solana/mint-new-try";  // ✅ Import mint function
 import styles from "@/components/shop/styles/Home.module.css";
 
 interface Adventure {
@@ -72,10 +72,8 @@ export default function Home() {
   const [selectedAdventure, setSelectedAdventure] = useState<string | null>(null);
   const [chatBackground, setChatBackground] = useState("");
   const [chatTextColor, setChatTextColor] = useState("");
-  const [mintStatus, setMintStatus] = useState<string | null>(null); // ✅ State to track minting result
-
-  // ✅ Call useMintGameNFT only when an adventure is selected
-  const { mintGameNFT, minting } = useMintGameNFT(selectedAdventure || "");
+  const [mintStatus, setMintStatus] = useState<string | JSX.Element | null>(null);
+  const [minting, setMinting] = useState(false); // ✅ Track minting state
 
   const handleAdventureSelect = (adventure: Adventure) => {
     setSelectedAdventure(adventure.title);
@@ -87,14 +85,26 @@ export default function Home() {
 
   const handleMintClick = async () => {
     console.log(`Minting NFT for: ${selectedAdventure}`);
+    setMinting(true);
 
     try {
-      await mintGameNFT();
-      console.log("✅ NFT Minted Successfully!");
-      setMintStatus("✅ NFT Minted Successfully!");
+      const mintAddress = await mintGameNFT();
+      if (mintAddress) {
+        const explorerLink = `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`;
+        console.log("✅ NFT Minted Successfully! View it here:", explorerLink);
+        setMintStatus(
+          <a href={explorerLink} target="_blank" rel="noopener noreferrer">
+            ✅ View NFT on Solana
+          </a>
+        );
+      } else {
+        throw new Error("Mint Address is null");
+      }
     } catch (error) {
       console.error("❌ NFT Minting Failed:", error);
       setMintStatus("❌ NFT Minting Failed. Check console for details.");
+    } finally {
+      setMinting(false);
     }
   };
 

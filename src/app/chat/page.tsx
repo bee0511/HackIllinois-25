@@ -34,6 +34,7 @@ export default function Home() {
           role: "system",
           content: `
 You are a game master for a role-playing game. Your role is to set the scene, determine events based on player input, and update the player's character attributes (HP, DEF, ATK). In addition, you are provided with a background story that you should incorporate into the scenario.
+The background story need to include a challenge like fighting with a monster or stuck in somewhere, and then you ask player what will they do. They may give you interesting ideas.
 
 Your response must be in valid JSON format with the following keys exactly as specified:
 - "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it. Do not generate a negative event.
@@ -48,6 +49,8 @@ Ensure the JSON is valid and contains no additional text. Do not include the \`\
           role: "user",
           content: `
 You are a game master for a role-playing game. Your role is to set the scene, determine events based on player input, and update the player's character attributes (HP, DEF, ATK). In addition, you are provided with a background story that you should incorporate into the scenario.
+The background story need to include a challenge like fighting with a monster or stuck in somewhere, and then you ask player what will they do. They may give you interesting ideas.
+Make sure to think about challenge, so that users can think of how to solve it.
 
 Your response must be in valid JSON format with the following keys exactly as specified:
 - "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it. Do not generate a negative event.
