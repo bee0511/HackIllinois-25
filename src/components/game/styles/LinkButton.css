@@ -1,0 +1,19 @@
+.default-link-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: darkslateblue;
+  border-radius: 15px;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.default-link-btn:hover {
+  background-color: #218838;
+}
+
+.default-link-btn:active {
+  background-color: #1e7e34;
+}
