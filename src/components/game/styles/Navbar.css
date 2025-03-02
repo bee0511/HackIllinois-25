@@ -1,0 +1,16 @@
+.default-navbar-link-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: inherit;
+  border-radius: 15px;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.default-navbar-link-btn:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+}
