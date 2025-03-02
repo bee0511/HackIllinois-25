@@ -6,10 +6,10 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-HackIllinois25 = "coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF"
+hack_illinois_25 = "coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF"
 
 [programs.devnet]
-HackIllinois25 = "coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF"
+hack_illinois_25 = "coUnmi3oBUtwtd9fjeAvSsJssXh5A5xyPbhpewyzRVF"
 
 [registry]
 url = "https://api.apr.dev"
