@@ -1,13 +1,31 @@
-'use client';
-
+'use client'
 import { useState, FormEvent } from 'react';
+
+interface Stats {
+  HP: number;
+  DEF: number;
+  ATK: number;
+}
+
+interface HistoryItem {
+  event: string;
+  userInput: string;
+  ret: string;
+}
 
 export default function Home() {
   const [prompt, setPrompt] = useState<string>("");
-  const [response, setResponse] = useState<string>("");
+  const [stats, setStats] = useState<Stats>({ HP: 10, DEF: 10, ATK: 10 });
+  const [history, setHistory] = useState<HistoryItem[]>([]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const newHistoryItem: HistoryItem = {
+      event: "",
+      userInput: prompt,
+      ret: ""
+    };
 
     const data = {
       model: "Qwen/Qwen2.5-VL-72B-Instruct",
@@ -15,33 +33,34 @@ export default function Home() {
         {
           role: "system",
           content: `
-    You are a game master for a role-playing game. Your role is to set the scene and determine the events based on player input. After each dialogue, you should update the player's character attributes (HP, DEF, ATK) and output your response in JSON format.
-     
-    The JSON response should include the following keys:
-    - "scene": A description of the current scenario.
-    - "event": A description of the event that just happened.
-    - "stats": An object containing the character's updated stats, e.g. { "HP": number, "DEF": number, "ATK": number }.
-    - "narrative": (Optional) Any additional narrative or instructions.
-    
-    Make sure the JSON is valid and contains no additional text.
-          `.trim()
+You are a game master for a role-playing game. Your role is to set the scene, determine events based on player input, and update the player's character attributes (HP, DEF, ATK). In addition, you are provided with a background story that you should incorporate into the scenario.
+
+Your response must be in valid JSON format with the following keys exactly as specified:
+- "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it.
+- "HP": The updated HP value (number).
+- "DEF": The updated DEF value (number).
+- "ATK": The updated ATK value (number).
+
+Ensure the JSON is valid and contains no additional text. Do not include the \`\`\`json\`\`\` block.
+`.trim()
         },
         {
           role: "user",
           content: `
-    You are a game master for a role-playing game. Your role is to set the scene and determine the events based on player input. After each dialogue, you should update the player's character attributes (HP, DEF, ATK) and output your response in JSON format.
-     
-    The JSON response should include the following keys:
-    - "scene": A description of the current scenario.
-    - "event": A description of the event that just happened.
-    - "stats": An object containing the character's updated stats, e.g. { "HP": number, "DEF": number, "ATK": number }.
-    - "narrative": (Optional) Any additional narrative or instructions.
-    
-    Make sure the JSON is valid and contains no additional text.
-          `.trim() + ", and the following is the user input:" + prompt
-        }
+You are a game master for a role-playing game. Your role is to set the scene, determine events based on player input, and update the player's character attributes (HP, DEF, ATK). In addition, you are provided with a background story that you should incorporate into the scenario.
+
+Your response must be in valid JSON format with the following keys exactly as specified:
+- "Event": A description of the event that occurred, including where it happened. You need to consider the user input and generate a response based on it.
+- "HP": The updated HP value (number).
+- "DEF": The updated DEF value (number).
+- "ATK": The updated ATK value (number).
+
+Ensure the JSON is valid and contains no additional text.
+Do not include the \`\`\`json\`\`\` block.
+`.trim() + ". The following is the user prompt: " + prompt + " The history events is: " + history.map(h => h.event).join(", ")
+        },
       ],
-      temperature: 0.1,
+      temperature: 0.6,
       course_name: "Hackillinois",
       stream: true,
       api_key: "uc_11a8b18a4e844a63b0c092e3457b0f47",
@@ -56,8 +75,19 @@ export default function Home() {
         },
         body: JSON.stringify(data),
       });
-      const result = await response.text();
-      setResponse(result);
+      const result = await response.json();
+
+      // Update stats
+      const updatedStats = {
+        HP: stats.HP + result.HP,
+        DEF: stats.DEF + result.DEF,
+        ATK: stats.ATK + result.ATK,
+      };
+      setStats(updatedStats);
+
+      newHistoryItem.event = result.Event;
+      newHistoryItem.ret = result.ret;
+      setHistory([...history, newHistoryItem]);
     } 
     catch (error) {
       console.error('Error sending message:', error);
@@ -66,16 +96,31 @@ export default function Home() {
 
   return (
     <div>
-      <h1>OpenAI Integration with Next.js</h1>
+      <div>
+        <h2>Stats</h2>
+        <p>HP: {stats.HP}</p>
+        <p>DEF: {stats.DEF}</p>
+        <p>ATK: {stats.ATK}</p>
+      </div>
+      <div>
+        <h2>History</h2>
+        <ul>
+          {history.map((item, index) => (
+            <li key={index}>
+              <p><strong>User Input:</strong> {item.userInput}</p>
+              <p><strong>Event:</strong> {item.event}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
       <form onSubmit={handleSubmit}>
         <textarea
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Enter your prompt here..."
         />
-        <button type="submit">Generate</button>
+        <button type="submit">Send the message</button>
       </form>
-      {response && <div><h2>Response:</h2><p>{response}</p></div>}
     </div>
   );
 }

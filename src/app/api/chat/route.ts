@@ -23,10 +23,18 @@ export async function POST(request: Request) {
       headers: headers,
       body: JSON.stringify(data)
     });
-    const result = await response.text();
-    return new Response(result, {
-      headers: { 'Content-Type': 'text/plain' },
-    });
+    const result = await response.json();
+    console.log(result);
+    // parse the result, result has the Event, HP, DEF, ATK
+
+    const { Event, HP, DEF, ATK, ret } = result;
+    console.log('Event:', Event);
+    console.log('HP:', HP);
+    console.log('DEF:', DEF);
+    console.log('ATK:', ATK);
+    console.log('ret:', ret);
+    // return the result
+    return NextResponse.json(result);
   } catch (error) {
     console.error('Error:', error);
     return NextResponse.json({ error: 'Failed to send request' }, { status: 500 });
