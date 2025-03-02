@@ -74,6 +74,7 @@ export default function Home() {
   const [chatTextColor, setChatTextColor] = useState("");
   const [mintStatus, setMintStatus] = useState<string | JSX.Element | null>(null);
   const [minting, setMinting] = useState(false); // ✅ Track minting state
+  const [mintAddress, setMintAddress] = useState<string | null>(null); // ✅ Track mint address
 
   const handleAdventureSelect = (adventure: Adventure) => {
     setSelectedAdventure(adventure.title);
@@ -81,6 +82,7 @@ export default function Home() {
     setChatTextColor(adventure.textColor);
     setShowChatbot(true);
     setMintStatus(null); // ✅ Reset minting status on new selection
+    setMintAddress(null); // ✅ Reset mint address on new selection
   };
 
   const handleMintClick = async () => {
@@ -92,9 +94,10 @@ export default function Home() {
       if (mintAddress) {
         const explorerLink = `https://explorer.solana.com/address/${mintAddress}?cluster=devnet`;
         console.log("✅ NFT Minted Successfully! View it here:", explorerLink);
+        setMintAddress(mintAddress);
         setMintStatus(
           <a href={explorerLink} target="_blank" rel="noopener noreferrer">
-            ✅ View NFT on Solana
+            ✅ Click to View NFT on Solana!
           </a>
         );
       } else {
@@ -141,7 +144,7 @@ export default function Home() {
             disabled={minting} 
             className={styles.mintButton}
           >
-            {minting ? "Minting..." : "Mint NFT"}
+            {minting ? "Minting..." : mintAddress ? "View NFT" : "Mint NFT"}
           </button>
 
           {/* ✅ Display Minting Status */}

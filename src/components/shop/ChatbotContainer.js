@@ -13,7 +13,6 @@ const ChatbotContainer = ({ adventureName, backgroundColor, textColor }) => {
     setMessages([{ text: `Starting your adventure...`, isBot: true }]);
   }, []);
 
-
   const sendMessage = async (message, newHistoryItem = null) => {
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -100,11 +99,10 @@ Do not include the \`\`\`json\`\`\` block.
     <div className={styles.chatContainer} style={{ background: backgroundColor || "#ffffff" }}>
       <div className={styles.chatHeader}>
         <h2 style={{ color: textColor || "#ffffff" }}>Chat</h2>
-        <button className={styles.backButton} onClick={() => router.push("/")}>Back</button>
+        <button className={styles.backButton} onClick={() => window.location.reload()}>Back</button>
       </div>
 
       <div className={styles.statsContainer}>
-        <h3>Stats</h3>
         <p>❤️ HP: {stats.HP}</p>
         <p>🛡️ DEF: {stats.DEF}</p>
         <p>⚔️ ATK: {stats.ATK}</p>
@@ -123,6 +121,3 @@ Do not include the \`\`\`json\`\`\` block.
 };
 
 export default ChatbotContainer;
-
-
-

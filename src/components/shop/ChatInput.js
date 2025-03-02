@@ -14,6 +14,8 @@ const ChatInput = ({ sendMessage }) => {
 
   return (
     <div className={styles.inputContainer}>
+        <button className={styles.sendButton} onClick={() => window.location.href = '/game'}>Go to Game</button>
+
       <input
         type="text"
         value={inputText}
